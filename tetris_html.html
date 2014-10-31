@@ -1,0 +1,764 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+<title>~\neo\graphics\tetris\1.py.html</title>
+<meta name="Generator" content="Vim/7.3">
+<meta name="plugin-version" content="vim7.3_v6">
+<meta name="syntax" content="python">
+<meta name="settings" content="use_css">
+<style type="text/css">
+<!--
+pre { font-family: monospace; color: #000000; background-color: #ffffff; }
+body { font-family: monospace; color: #000000; background-color: #ffffff; }
+.Statement { color: #804040; font-weight: bold; }
+.Identifier { color: #008080; }
+.Constant { color: #ff00ff; }
+.PreProc { color: #a020f0; }
+.Comment { color: #0000ff; }
+-->
+</style>
+</head>
+<body>
+<pre>
+<span class="Comment">########################################################################</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment">#                      Simple-Tetris-Game                              #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment"># CREATED BY    :    Nithin.P                                          #</span>
+<span class="Comment">#                    nithup123@gmail.com                               #</span>
+<span class="Comment">#                    <a href="http://facebook.com/nithin.nithinp">http://facebook.com/nithin.nithinp</a>                #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment"># Description   :    This is a Simple Tetris Game  coded by            #</span>
+<span class="Comment">#                    me in python using pygame module.                 #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment"># License       :    This Source Code is free to use                   #</span>
+<span class="Comment">#                    for educational purpose only.                     #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment"># Instructions  :    Use UP key for change the shape.                  #</span>
+<span class="Comment">#                    Use DOWN key to accelarate speed of shape.        #</span>
+<span class="Comment">#                    USE LEFT key for move to left.                    #</span>
+<span class="Comment">#                    USe RIGHT key for move to right.                  #</span>
+<span class="Comment">#                                                                      #</span>
+<span class="Comment">########################################################################</span>
+
+
+<span class="PreProc">import</span> pygame
+<span class="PreProc">import</span> sys
+<span class="PreProc">import</span> random
+
+
+
+
+<span class="Comment"># Initial Conditions.</span>
+
+score=<span class="Constant">0</span>
+white=(<span class="Constant">255</span>,<span class="Constant">255</span>,<span class="Constant">255</span>)
+black=(<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>)
+green=(<span class="Constant">0</span>,<span class="Constant">255</span>,<span class="Constant">0</span>)
+red=(<span class="Constant">255</span>,<span class="Constant">0</span>,<span class="Constant">0</span>)
+blue=(<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">255</span>)
+gray=(<span class="Constant">128</span>,<span class="Constant">128</span>,<span class="Constant">128</span>)
+size=[<span class="Constant">660</span>,<span class="Constant">600</span>]
+game=[ [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>],
+        [<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>,<span class="Constant">0</span>] ]
+new_one=<span class="Identifier">True</span>
+i_1=<span class="Constant">0</span>
+i_2=<span class="Constant">0</span>
+i_3=<span class="Constant">1</span>
+i_4=<span class="Constant">1</span>
+j_1=<span class="Constant">9</span>
+j_2=<span class="Constant">10</span>
+j_3=<span class="Constant">9</span>
+j_4=<span class="Constant">10</span>
+can_accel_left=<span class="Identifier">False</span>
+can_accel_right=<span class="Identifier">False</span>
+can_accel_down=<span class="Identifier">False</span>
+can_change_shape=<span class="Identifier">False</span>
+time1=pygame.time.get_ticks()
+time2=pygame.time.get_ticks()
+shape=<span class="Constant">0</span>
+game_over=<span class="Identifier">True</span>
+clock=<span class="Constant">500</span>
+
+
+
+
+
+
+
+<span class="Comment"># Definition of printing press any key function.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_press_any_key</span>() :
+        <span class="Statement">global</span> paused_game
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">30</span>)
+        <span class="Statement">if</span> paused_game :
+                text = font.render(<span class="Constant">&quot;Press Escape key to continue&quot;</span>, <span class="Identifier">True</span>, gray)
+        <span class="Statement">else</span> :
+                text = font.render(<span class="Constant">&quot;Press any key to continue&quot;</span>, <span class="Identifier">True</span>, gray)
+        rect = text.get_rect()
+        rect.centerx=size[<span class="Constant">0</span>]-<span class="Constant">150</span>
+        rect.centery=size[<span class="Constant">1</span>]-<span class="Constant">50</span>
+        screen.blit(text, rect)
+
+
+
+
+
+
+
+<span class="Comment"># Definition of wait for any key function</span>
+
+<span class="Statement">def</span> <span class="Identifier">wait_for_any_key</span>() :
+        <span class="Statement">while</span> <span class="Identifier">True</span> :
+                <span class="Statement">for</span> event <span class="Statement">in</span> pygame.event.get() :
+                        <span class="Statement">if</span> event.<span class="Identifier">type</span>==pygame.QUIT :
+                                sys.exit()
+                                pygame.quit()
+                        <span class="Statement">if</span> event.<span class="Identifier">type</span> == pygame.KEYDOWN :
+                                <span class="Statement">return</span> <span class="Identifier">True</span>
+
+
+
+
+
+
+<span class="Comment"># Function to draw initial screen.</span>
+
+<span class="Statement">def</span> <span class="Identifier">draw_initial_screen</span>() :
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">220</span>)
+        gameText = font.render(<span class="Constant">&quot;Nithin's&quot;</span>, <span class="Identifier">True</span>, white)
+        overText = font.render(<span class="Constant">'Tetris'</span>, <span class="Identifier">True</span>, white)
+        over1Text = font.render(<span class="Constant">'Game'</span>, <span class="Identifier">True</span>, white)
+        gameRect = gameText.get_rect()
+        overRect = overText.get_rect()
+        over1Rect = over1Text.get_rect()
+        gameRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        gameRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)-<span class="Constant">150</span>
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)
+        over1Rect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        over1Rect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>+<span class="Constant">150</span>)
+        screen.blit(gameText, gameRect)
+        screen.blit(overText, overRect)
+        screen.blit(over1Text, over1Rect)
+        print_press_any_key()
+        pygame.display.update()
+
+
+
+
+
+
+
+<span class="Comment"># Definition of function to print game over.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_game_over</span>() :
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">260</span>)
+        font1=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">50</span>)
+        gameText = font.render(<span class="Constant">'Game'</span>, <span class="Identifier">True</span>, white)
+        overText = font.render(<span class="Constant">'Over'</span>, <span class="Identifier">True</span>, white)
+        sc=<span class="Constant">&quot;Your Score : &quot;</span>+<span class="Identifier">str</span>(score)
+        scoreText = font1.render(sc, <span class="Identifier">True</span>, white)
+        gameRect = gameText.get_rect()
+        overRect = overText.get_rect()
+        scoreRect = scoreText.get_rect()
+        gameRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        gameRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)-<span class="Constant">150</span>
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)
+        scoreRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        scoreRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)+<span class="Constant">120</span>
+        screen.blit(gameText, gameRect)
+        screen.blit(overText, overRect)
+        screen.blit(scoreText, scoreRect)
+
+
+
+
+
+<span class="Comment"># Definition of function to change position of the shapes</span>
+
+<span class="Statement">def</span> <span class="Identifier">change_position</span>(direction,start_accel) :
+        <span class="Statement">global</span> can_accel_left
+        <span class="Statement">global</span> can_accel_right
+        <span class="Statement">global</span> can_accel_down
+        <span class="Statement">global</span> can_change_shape
+        <span class="Statement">if</span> start_accel :
+                <span class="Statement">if</span> direction==<span class="Constant">'left'</span> :
+                        can_accel_left=<span class="Identifier">True</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'right'</span> :
+                        can_accel_right=<span class="Identifier">True</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'down'</span> :
+                        can_accel_down=<span class="Identifier">True</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'up'</span> :
+                        can_change_shape=<span class="Identifier">True</span>
+        <span class="Statement">else</span> :
+                <span class="Statement">if</span> direction==<span class="Constant">'left'</span> :
+                        can_accel_left=<span class="Identifier">False</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'right'</span> :
+                        can_accel_right=<span class="Identifier">False</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'down'</span> :
+                        can_accel_down=<span class="Identifier">False</span>
+                <span class="Statement">if</span> direction==<span class="Constant">'up'</span> :
+                        can_change_shape=<span class="Identifier">False</span>
+
+
+
+
+
+
+<span class="Comment"># Function to draw screen.</span>
+
+<span class="Statement">def</span> <span class="Identifier">draw_screen</span>() :
+        <span class="Statement">global</span> game_over
+        screen.fill(black)
+        i=<span class="Constant">0</span>
+        <span class="Statement">while</span> i&lt;(size[<span class="Constant">0</span>]) :
+                pygame.draw.line(screen,gray,(i,<span class="Constant">0</span>),(i,size[<span class="Constant">1</span>]))
+                i+=<span class="Constant">30</span>
+        i=<span class="Constant">0</span>
+        <span class="Statement">while</span> i&lt;(size[<span class="Constant">1</span>]) :
+                pygame.draw.line(screen,gray,(<span class="Constant">0</span>,i),(size[<span class="Constant">0</span>],i))
+                i+=<span class="Constant">30</span>
+        <span class="Statement">if</span> game_over==<span class="Identifier">False</span> :
+                font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">100</span>)
+                scoreText = font.render(<span class="Identifier">str</span>(score), <span class="Identifier">True</span>, white)
+                scoreRect = scoreText.get_rect()
+                scoreRect.centerx=size[<span class="Constant">0</span>]-<span class="Constant">100</span>
+                scoreRect.centery=<span class="Constant">100</span>
+                screen.blit(scoreText,scoreRect)
+
+
+
+
+
+
+
+
+<span class="Comment"># Main play() function.</span>
+
+<span class="Statement">def</span> <span class="Identifier">play</span>() :
+        <span class="Statement">global</span> clock
+        <span class="Statement">global</span> game_over
+        <span class="Statement">global</span> can_accel_left
+        <span class="Statement">global</span> can_accel_right
+        <span class="Statement">global</span> can_accel_down
+        <span class="Statement">global</span> new_one
+        <span class="Statement">global</span> i_1
+        <span class="Statement">global</span> i_2
+        <span class="Statement">global</span> i_3
+        <span class="Statement">global</span> i_4
+        <span class="Statement">global</span> j_1
+        <span class="Statement">global</span> j_2
+        <span class="Statement">global</span> j_3
+        <span class="Statement">global</span> j_4
+        <span class="Statement">global</span> time1
+        <span class="Statement">global</span> time2
+        <span class="Statement">global</span> score
+        <span class="Statement">global</span> shape
+        <span class="Statement">if</span> new_one :
+                new_one=<span class="Identifier">False</span>
+                <span class="Statement">if</span> game[i_1][j_1]==<span class="Constant">1</span> :
+                        game_over=<span class="Identifier">True</span>
+                        <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">20</span>) :
+                                <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                        <span class="Statement">if</span> game[i][j]==<span class="Constant">1</span> :
+                                                left=(j*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                                up=(i*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                                pygame.draw.rect(screen,red,(left,up,<span class="Constant">29</span>,<span class="Constant">29</span>))
+                        print_game_over()
+                        print_press_any_key()
+                <span class="Statement">else</span> :
+                        <span class="Statement">if</span> shape==<span class="Constant">0</span> :
+                                i_1=<span class="Constant">0</span>
+                                i_2=<span class="Constant">0</span>
+                                i_3=<span class="Constant">1</span>
+                                i_4=<span class="Constant">1</span>
+                                j_1=<span class="Constant">9</span>
+                                j_2=<span class="Constant">10</span>
+                                j_3=<span class="Constant">9</span>
+                                j_4=<span class="Constant">10</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">1</span> :
+                                i_1=<span class="Constant">0</span>
+                                i_2=<span class="Constant">0</span>
+                                i_3=<span class="Constant">0</span>
+                                i_4=<span class="Constant">0</span>
+                                j_1=<span class="Constant">8</span>
+                                j_2=<span class="Constant">9</span>
+                                j_3=<span class="Constant">10</span>
+                                j_4=<span class="Constant">11</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">2</span> :
+                                i_1=<span class="Constant">0</span>
+                                i_2=<span class="Constant">1</span>
+                                i_3=<span class="Constant">2</span>
+                                i_4=<span class="Constant">3</span>
+                                j_1=<span class="Constant">9</span>
+                                j_2=<span class="Constant">9</span>
+                                j_3=<span class="Constant">9</span>
+                                j_4=<span class="Constant">9</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">3</span> :
+                                i_1=<span class="Constant">0</span>
+                                i_2=<span class="Constant">1</span>
+                                i_3=<span class="Constant">1</span>
+                                i_4=<span class="Constant">2</span>
+                                j_1=<span class="Constant">9</span>
+                                j_2=<span class="Constant">9</span>
+                                j_3=<span class="Constant">10</span>
+                                j_4=<span class="Constant">10</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">4</span> :
+                                i_1=<span class="Constant">1</span>
+                                i_2=<span class="Constant">2</span>
+                                i_3=<span class="Constant">0</span>
+                                i_4=<span class="Constant">1</span>
+                                j_1=<span class="Constant">9</span>
+                                j_2=<span class="Constant">9</span>
+                                j_3=<span class="Constant">10</span>
+                                j_4=<span class="Constant">10</span>
+                        game[i_1][j_1]=<span class="Constant">1</span>
+                        game[i_2][j_2]=<span class="Constant">1</span>
+                        game[i_3][j_3]=<span class="Constant">1</span>
+                        game[i_4][j_4]=<span class="Constant">1</span>
+        <span class="Statement">else</span> :
+                <span class="Statement">if</span> pygame.time.get_ticks() &gt; (time2+<span class="Constant">100</span>) :
+                        game[i_1][j_1]=<span class="Constant">0</span>
+                        game[i_2][j_2]=<span class="Constant">0</span>
+                        game[i_3][j_3]=<span class="Constant">0</span>
+                        game[i_4][j_4]=<span class="Constant">0</span>
+                        <span class="Statement">if</span> can_change_shape :
+                                <span class="Statement">if</span> shape==<span class="Constant">0</span> :
+                                        <span class="Statement">if</span> j_1-<span class="Constant">1</span> &gt;= <span class="Constant">0</span> <span class="Statement">and</span> j_2+<span class="Constant">1</span> &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_1][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        i_3=i_1
+                                                        i_4=i_1
+                                                        j_3=j_1-<span class="Constant">1</span>
+                                                        j_4=j_2+<span class="Constant">1</span>
+                                                        x=i_3
+                                                        i_3=i_2
+                                                        i_2=x
+                                                        x=j_3
+                                                        j_3=j_2
+                                                        j_2=x
+                                                        x=i_2
+                                                        i_2=i_1
+                                                        i_1=x
+                                                        x=j_2
+                                                        j_2=j_1
+                                                        j_1=x
+                                                        shape=<span class="Constant">1</span>
+                                <span class="Statement">elif</span> shape==<span class="Constant">1</span> :
+                                        <span class="Statement">if</span> i_1+<span class="Constant">3</span> &lt;= <span class="Constant">19</span> :
+                                                <span class="Statement">if</span> game[i_1+<span class="Constant">1</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_1+<span class="Constant">2</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_1+<span class="Constant">3</span>][j_1]==<span class="Constant">0</span> :
+                                                        i_2=i_1+<span class="Constant">1</span>
+                                                        i_3=i_1+<span class="Constant">2</span>
+                                                        i_4=i_1+<span class="Constant">3</span>
+                                                        j_2=j_1
+                                                        j_3=j_1
+                                                        j_4=j_1
+                                                        shape=<span class="Constant">2</span>
+                                <span class="Statement">elif</span> shape==<span class="Constant">2</span> :
+                                        <span class="Statement">if</span> j_1&lt;=<span class="Constant">20</span> :
+                                                <span class="Statement">if</span> game[i_2][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">1</span>][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        i_3=i_2
+                                                        j_3=j_2+<span class="Constant">1</span>
+                                                        i_4=i_2+<span class="Constant">1</span>
+                                                        j_4=j_2+<span class="Constant">1</span>
+                                                        shape=<span class="Constant">3</span>
+                                <span class="Statement">elif</span> shape==<span class="Constant">3</span> :
+                                        <span class="Statement">if</span> (i_4+<span class="Constant">1</span>)&lt;=<span class="Constant">19</span> :
+                                                <span class="Statement">if</span> game[i_4+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span> :
+                                                        i_1=i_4
+                                                        i_2=i_4+<span class="Constant">1</span>
+                                                        shape=<span class="Constant">4</span>
+                                <span class="Statement">elif</span> shape==<span class="Constant">4</span> :
+                                        <span class="Statement">if</span> game[i_2][j_4]==<span class="Constant">0</span> :
+                                                i_3=i_1
+                                                i_4=i_2
+                                                shape=<span class="Constant">0</span>
+                                                x=i_2
+                                                i_2=i_3
+                                                i_3=x
+                                                x=j_2
+                                                j_2=j_3
+                                                j_3=x
+                        <span class="Statement">if</span> shape == <span class="Constant">0</span> :
+                                <span class="Statement">if</span> can_accel_left :
+                                        <span class="Statement">if</span> (j_1)&gt;=<span class="Constant">1</span> :
+                                                <span class="Statement">if</span> game[i_1+<span class="Constant">1</span>][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span>   :
+                                                        j_1-=<span class="Constant">1</span>
+                                                        j_3-=<span class="Constant">1</span>
+                                                        j_2-=<span class="Constant">1</span>
+                                                        j_4-=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_right :
+                                        <span class="Statement">if</span> (j_2+<span class="Constant">1</span>) &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span> game[i_2+<span class="Constant">1</span>][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span>  :
+                                                        j_1+=<span class="Constant">1</span>
+                                                        j_3+=<span class="Constant">1</span>
+                                                        j_2+=<span class="Constant">1</span>
+                                                        j_4+=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_down :
+                                        <span class="Statement">if</span> (i_1+<span class="Constant">1</span>) &lt; <span class="Constant">19</span> <span class="Statement">and</span> (i_2+<span class="Constant">1</span>) &lt; <span class="Constant">19</span> :
+                                                <span class="Statement">if</span> game[i_1+<span class="Constant">2</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">2</span>][j_2]==<span class="Constant">0</span>  :
+                                                        i_1+=<span class="Constant">1</span>
+                                                        i_3+=<span class="Constant">1</span>
+                                                        i_2+=<span class="Constant">1</span>
+                                                        i_4+=<span class="Constant">1</span>
+                                                <span class="Statement">else</span> :
+                                                        new_one=<span class="Identifier">True</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+
+                        <span class="Statement">elif</span> shape ==<span class="Constant">1</span> :
+                                <span class="Statement">if</span> can_accel_left :
+                                        <span class="Statement">if</span> (j_1)&gt;=<span class="Constant">1</span> :
+                                                <span class="Statement">if</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1-=<span class="Constant">1</span>
+                                                        j_3-=<span class="Constant">1</span>
+                                                        j_2-=<span class="Constant">1</span>
+                                                        j_4-=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_right :
+                                        <span class="Statement">if</span> (j_4+<span class="Constant">1</span>) &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span> game[i_2][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1+=<span class="Constant">1</span>
+                                                        j_3+=<span class="Constant">1</span>
+                                                        j_2+=<span class="Constant">1</span>
+                                                        j_4+=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_down :
+                                        <span class="Statement">if</span> (i_1+<span class="Constant">1</span>) &lt; <span class="Constant">20</span> <span class="Statement">and</span> (i_2+<span class="Constant">1</span>) &lt; <span class="Constant">20</span> :
+                                                <span class="Statement">if</span> game[i_1+<span class="Constant">1</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3+<span class="Constant">1</span>][j_3]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span>  :
+                                                        i_1+=<span class="Constant">1</span>
+                                                        i_3+=<span class="Constant">1</span>
+                                                        i_2+=<span class="Constant">1</span>
+                                                        i_4+=<span class="Constant">1</span>
+                                                <span class="Statement">else</span> :
+                                                        new_one=<span class="Identifier">True</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+
+                        <span class="Statement">elif</span> shape ==<span class="Constant">2</span> :
+                                <span class="Statement">if</span> can_accel_left :
+                                        <span class="Statement">if</span> (j_1)&gt;=<span class="Constant">1</span> :
+                                                <span class="Statement">if</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1-=<span class="Constant">1</span>
+                                                        j_3-=<span class="Constant">1</span>
+                                                        j_2-=<span class="Constant">1</span>
+                                                        j_4-=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_right :
+                                        <span class="Statement">if</span> (j_4+<span class="Constant">1</span>) &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span> game[i_2][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_1][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1+=<span class="Constant">1</span>
+                                                        j_3+=<span class="Constant">1</span>
+                                                        j_2+=<span class="Constant">1</span>
+                                                        j_4+=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_down :
+                                        <span class="Statement">if</span> (i_1+<span class="Constant">4</span>) &lt; <span class="Constant">20</span>  :
+                                                <span class="Statement">if</span> game[i_1+<span class="Constant">4</span>][j_1]==<span class="Constant">0</span>   :
+                                                        i_1+=<span class="Constant">1</span>
+                                                        i_3+=<span class="Constant">1</span>
+                                                        i_2+=<span class="Constant">1</span>
+                                                        i_4+=<span class="Constant">1</span>
+                                                <span class="Statement">else</span> :
+                                                        new_one=<span class="Identifier">True</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape ==<span class="Constant">3</span> :
+                                <span class="Statement">if</span> can_accel_left :
+                                        <span class="Statement">if</span> (j_1)&gt;=<span class="Constant">1</span> :
+                                                <span class="Statement">if</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4][j_4-<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1-=<span class="Constant">1</span>
+                                                        j_3-=<span class="Constant">1</span>
+                                                        j_2-=<span class="Constant">1</span>
+                                                        j_4-=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_right :
+                                        <span class="Statement">if</span> (j_4+<span class="Constant">1</span>) &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span>  game[i_1][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1+=<span class="Constant">1</span>
+                                                        j_3+=<span class="Constant">1</span>
+                                                        j_2+=<span class="Constant">1</span>
+                                                        j_4+=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_down :
+                                        <span class="Statement">if</span> (i_4+<span class="Constant">1</span>) &lt; <span class="Constant">20</span>  :
+                                                <span class="Statement">if</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span>   :
+                                                        i_1+=<span class="Constant">1</span>
+                                                        i_3+=<span class="Constant">1</span>
+                                                        i_2+=<span class="Constant">1</span>
+                                                        i_4+=<span class="Constant">1</span>
+                                                <span class="Statement">else</span> :
+                                                        new_one=<span class="Identifier">True</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape ==<span class="Constant">4</span> :
+                                <span class="Statement">if</span> can_accel_left :
+                                        <span class="Statement">if</span> (j_1)&gt;=<span class="Constant">1</span> :
+                                                <span class="Statement">if</span> game[i_1][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2][j_1-<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3][j_3-<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1-=<span class="Constant">1</span>
+                                                        j_3-=<span class="Constant">1</span>
+                                                        j_2-=<span class="Constant">1</span>
+                                                        j_4-=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_right :
+                                        <span class="Statement">if</span> (j_4+<span class="Constant">1</span>) &lt;=<span class="Constant">21</span> :
+                                                <span class="Statement">if</span>  game[i_3][j_3+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4][j_4+<span class="Constant">1</span>]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2][j_2+<span class="Constant">1</span>]==<span class="Constant">0</span> :
+                                                        j_1+=<span class="Constant">1</span>
+                                                        j_3+=<span class="Constant">1</span>
+                                                        j_2+=<span class="Constant">1</span>
+                                                        j_4+=<span class="Constant">1</span>
+                                <span class="Statement">if</span> can_accel_down :
+                                        <span class="Statement">if</span> (i_2+<span class="Constant">1</span>) &lt; <span class="Constant">20</span>  :
+                                                <span class="Statement">if</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span>   :
+                                                        i_1+=<span class="Constant">1</span>
+                                                        i_3+=<span class="Constant">1</span>
+                                                        i_2+=<span class="Constant">1</span>
+                                                        i_4+=<span class="Constant">1</span>
+                                                <span class="Statement">else</span> :
+                                                        new_one=<span class="Identifier">True</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                        game[i_1][j_1]=<span class="Constant">1</span>
+                        game[i_2][j_2]=<span class="Constant">1</span>
+                        game[i_3][j_3]=<span class="Constant">1</span>
+                        game[i_4][j_4]=<span class="Constant">1</span>
+                        time2=pygame.time.get_ticks()
+
+                <span class="Statement">if</span> pygame.time.get_ticks() &gt; (time1+clock) :
+                        game[i_1][j_1]=<span class="Constant">0</span>
+                        game[i_2][j_2]=<span class="Constant">0</span>
+                        game[i_3][j_3]=<span class="Constant">0</span>
+                        game[i_4][j_4]=<span class="Constant">0</span>
+                        <span class="Statement">if</span> shape==<span class="Constant">0</span> :
+                                <span class="Statement">if</span> (i_1+<span class="Constant">1</span>) &lt; <span class="Constant">19</span> <span class="Statement">and</span> (i_2+<span class="Constant">1</span>) &lt; <span class="Constant">19</span> :
+                                        <span class="Statement">if</span> game[i_1+<span class="Constant">2</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">2</span>][j_2]==<span class="Constant">0</span>  :
+                                                i_1+=<span class="Constant">1</span>
+                                                i_3+=<span class="Constant">1</span>
+                                                i_2+=<span class="Constant">1</span>
+                                                i_4+=<span class="Constant">1</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                                <span class="Statement">else</span> :
+                                        new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">1</span> :
+                                <span class="Statement">if</span> (i_1+<span class="Constant">1</span>) &lt; <span class="Constant">20</span> :
+                                        <span class="Statement">if</span> game[i_1+<span class="Constant">1</span>][j_1]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_3+<span class="Constant">1</span>][j_3]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span> :
+                                                i_1+=<span class="Constant">1</span>
+                                                i_3+=<span class="Constant">1</span>
+                                                i_2+=<span class="Constant">1</span>
+                                                i_4+=<span class="Constant">1</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                                <span class="Statement">else</span> :
+                                        new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">2</span> :
+                                <span class="Statement">if</span> (i_1+<span class="Constant">4</span>) &lt; <span class="Constant">20</span>  :
+                                        <span class="Statement">if</span> game[i_1+<span class="Constant">4</span>][j_1]==<span class="Constant">0</span>   :
+                                                i_1+=<span class="Constant">1</span>
+                                                i_3+=<span class="Constant">1</span>
+                                                i_2+=<span class="Constant">1</span>
+                                                i_4+=<span class="Constant">1</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                                <span class="Statement">else</span> :
+                                        new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">3</span> :
+                                <span class="Statement">if</span> (i_4+<span class="Constant">1</span>) &lt; <span class="Constant">20</span>  :
+                                        <span class="Statement">if</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span>   :
+                                                i_1+=<span class="Constant">1</span>
+                                                i_3+=<span class="Constant">1</span>
+                                                i_2+=<span class="Constant">1</span>
+                                                i_4+=<span class="Constant">1</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                                <span class="Statement">else</span> :
+                                        new_one=<span class="Identifier">True</span>
+                        <span class="Statement">elif</span> shape==<span class="Constant">4</span> :
+                                <span class="Statement">if</span> (i_2+<span class="Constant">1</span>) &lt; <span class="Constant">20</span>  :
+                                        <span class="Statement">if</span> game[i_2+<span class="Constant">1</span>][j_2]==<span class="Constant">0</span> <span class="Statement">and</span> game[i_4+<span class="Constant">1</span>][j_4]==<span class="Constant">0</span>   :
+                                                i_1+=<span class="Constant">1</span>
+                                                i_3+=<span class="Constant">1</span>
+                                                i_2+=<span class="Constant">1</span>
+                                                i_4+=<span class="Constant">1</span>
+                                        <span class="Statement">else</span> :
+                                                new_one=<span class="Identifier">True</span>
+                                <span class="Statement">else</span> :
+                                        new_one=<span class="Identifier">True</span>
+
+                        game[i_1][j_1]=<span class="Constant">1</span>
+                        game[i_2][j_2]=<span class="Constant">1</span>
+                        game[i_3][j_3]=<span class="Constant">1</span>
+                        game[i_4][j_4]=<span class="Constant">1</span>
+                        time1=pygame.time.get_ticks()
+                <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">20</span>) :
+                        <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                <span class="Statement">if</span> game[i][j]==<span class="Constant">1</span> :
+                                        left=(j*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        up=(i*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        pygame.draw.rect(screen,red,(left,up,<span class="Constant">29</span>,<span class="Constant">29</span>))
+        <span class="Statement">if</span> new_one :
+                i_1=<span class="Constant">0</span>
+                i_2=<span class="Constant">0</span>
+                i_3=<span class="Constant">1</span>
+                i_4=<span class="Constant">1</span>
+                j_1=<span class="Constant">9</span>
+                j_2=<span class="Constant">10</span>
+                j_3=<span class="Constant">9</span>
+                j_4=<span class="Constant">10</span>
+
+                <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">20</span>) :
+                        fills=<span class="Identifier">True</span>
+                        <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                <span class="Statement">if</span> game[i][j]==<span class="Constant">0</span> :
+                                        fills=<span class="Identifier">False</span>
+                        <span class="Statement">if</span> fills==<span class="Identifier">True</span> :
+                                score+=<span class="Constant">5</span>
+                                clock-=<span class="Constant">25</span>
+                                <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                        game[i][j]=<span class="Constant">0</span>
+                                        left=(j*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        up=(i*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        pygame.draw.rect(screen,black,(left,up,<span class="Constant">29</span>,<span class="Constant">29</span>))
+                                <span class="Statement">for</span> k <span class="Statement">in</span> <span class="Identifier">range</span>(i-<span class="Constant">1</span>) :
+                                        <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                                <span class="Statement">if</span> game[i-k][j]==<span class="Constant">1</span> :
+                                                        game[i-k][j]=<span class="Constant">0</span>
+                                                        game[i-k+<span class="Constant">1</span>][j]=<span class="Constant">1</span>
+
+                <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">20</span>) :
+                        <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                <span class="Statement">if</span> game[i][j]==<span class="Constant">1</span> :
+                                        left=(j*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        up=(i*<span class="Constant">30</span>)+<span class="Constant">1</span>
+                                        pygame.draw.rect(screen,red,(left,up,<span class="Constant">29</span>,<span class="Constant">29</span>))
+                shape=(<span class="Identifier">int</span>(random.random()*<span class="Constant">100</span>))%<span class="Constant">4</span>
+
+
+
+
+
+
+
+
+
+<span class="Comment"># Function to print paused game.</span>
+
+<span class="Statement">def</span> <span class="Identifier">print_paused_game</span>() :
+        font=pygame.font.Font(<span class="Identifier">None</span>,<span class="Constant">230</span>)
+        overText = font.render(<span class="Constant">'Paused'</span>, <span class="Identifier">True</span>, white)
+        overRect = overText.get_rect()
+        overRect.centerx=(size[<span class="Constant">0</span>]/<span class="Constant">2</span>)
+        overRect.centery=(size[<span class="Constant">1</span>]/<span class="Constant">2</span>)
+        screen.blit(overText, overRect)
+        print_press_any_key()
+
+paused_game=<span class="Identifier">False</span>
+
+
+
+
+
+
+<span class="Comment"># Initial screen.</span>
+
+pygame.init()
+screen=pygame.display.set_mode(size,<span class="Constant">0</span>,<span class="Constant">32</span>)
+pygame.display.set_caption(<span class="Constant">&quot;Nithin's Tetris Game&quot;</span>)
+draw_screen()
+draw_initial_screen()
+<span class="Statement">while</span> <span class="Identifier">True</span> :
+        <span class="Statement">if</span> wait_for_any_key() :
+                <span class="Statement">break</span>
+game_over=<span class="Identifier">False</span>
+
+
+
+
+
+
+<span class="Comment"># Main game loop</span>
+
+<span class="Statement">while</span> <span class="Identifier">True</span> :
+        <span class="Statement">for</span> event <span class="Statement">in</span> pygame.event.get() :
+                <span class="Statement">if</span> event.<span class="Identifier">type</span>==pygame.QUIT :
+                        <span class="Statement">if</span> paused_game :
+                                sys.exit()
+                                pygame.quit()
+                        game_over=<span class="Identifier">True</span>
+                        print_game_over()
+                        pygame.display.update()
+                        time3=pygame.time.get_ticks()
+                        <span class="Statement">while</span> pygame.time.get_ticks() &lt; (time3+<span class="Constant">1000</span>) :
+                                pygame.time.get_ticks()
+                        sys.exit()
+                        pygame.quit()
+                <span class="Statement">if</span> event.<span class="Identifier">type</span> == pygame.KEYDOWN :
+                        <span class="Statement">if</span> event.key == pygame.K_ESCAPE :
+                                <span class="Statement">if</span> paused_game==<span class="Identifier">False</span> :
+                                        paused_game=<span class="Identifier">True</span>
+                                        print_paused_game()
+                                <span class="Statement">else</span> :
+                                        paused_game=<span class="Identifier">False</span>
+                        <span class="Statement">if</span> event.key == pygame.K_LEFT :
+                                 change_position(<span class="Constant">'left'</span>,<span class="Identifier">True</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_RIGHT :
+                                 change_position(<span class="Constant">'right'</span>,<span class="Identifier">True</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_DOWN :
+                                 change_position(<span class="Constant">'down'</span>,<span class="Identifier">True</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_UP :
+                                 change_position(<span class="Constant">'up'</span>,<span class="Identifier">True</span>)
+                <span class="Statement">if</span> event.<span class="Identifier">type</span> == pygame.KEYUP :
+                        <span class="Statement">if</span> event.key == pygame.K_LEFT :
+                                 change_position(<span class="Constant">'left'</span>,<span class="Identifier">False</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_RIGHT :
+                                 change_position(<span class="Constant">'right'</span>,<span class="Identifier">False</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_DOWN :
+                                 change_position(<span class="Constant">'down'</span>,<span class="Identifier">False</span>)
+                        <span class="Statement">if</span> event.key == pygame.K_UP :
+                                 change_position(<span class="Constant">'up'</span>,<span class="Identifier">False</span>)
+        <span class="Statement">if</span> game_over==<span class="Identifier">False</span> :
+                <span class="Statement">if</span> paused_game==<span class="Identifier">False</span> :
+                        draw_screen()
+                        play()
+        <span class="Statement">else</span> :
+                <span class="Statement">if</span> wait_for_any_key() :
+                        new_one=<span class="Identifier">True</span>
+                        i_1=<span class="Constant">0</span>
+                        i_2=<span class="Constant">0</span>
+                        i_3=<span class="Constant">1</span>
+                        i_4=<span class="Constant">1</span>
+                        j_1=<span class="Constant">9</span>
+                        j_2=<span class="Constant">10</span>
+                        j_3=<span class="Constant">9</span>
+                        j_4=<span class="Constant">10</span>
+                        can_accel_left=<span class="Identifier">False</span>
+                        can_accel_right=<span class="Identifier">False</span>
+                        can_accel_down=<span class="Identifier">False</span>
+                        can_change_shape=<span class="Identifier">False</span>
+                        time1=pygame.time.get_ticks()
+                        time2=pygame.time.get_ticks()
+                        shape=<span class="Constant">0</span>
+                        score=<span class="Constant">0</span>
+                        game_over=<span class="Identifier">False</span>
+                        clock=<span class="Constant">500</span>
+                        <span class="Statement">for</span> i <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">20</span>) :
+                                <span class="Statement">for</span> j <span class="Statement">in</span> <span class="Identifier">range</span>(<span class="Constant">22</span>) :
+                                        game[i][j]=<span class="Constant">0</span>
+        pygame.display.update()
+</pre>
+</body>
+</html>
